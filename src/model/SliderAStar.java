@@ -45,8 +45,7 @@ public class SliderAStar {
 		return new ArrayList<>();
 	}
 
-	private ArrayList<Direction> buildPath(Slider aSlider, HashMap<Slider, Slider> previousPuzzle,
-					HashMap<Slider, Direction> previousDirection) {
+	private ArrayList<Direction> buildPath(Slider aSlider, HashMap<Slider, Slider> previousPuzzle, HashMap<Slider, Direction> previousDirection) {
 		ArrayList<Direction> moves = new ArrayList<>();
 
 		return moves;

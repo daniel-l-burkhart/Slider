@@ -9,15 +9,27 @@ import java.util.ArrayList;
  * @version Fall 2015
  */
 public class Slider {
+
 	private int[] board;
 	private int moveCount;
 
-	final private int WIDTH = 3;
+	private final int width = 3;
 
 	/**
 	 * Constructor of object.
 	 */
 	public Slider() {
+		this.board = new int[9];
+
+		int count = 1;
+		for (int i = 0; i < 8; i++) {
+			this.board[i] = count;
+			count += 1;
+		}
+
+		this.board[8] = 0;
+
+		this.moveCount = 0;
 	}
 
 	/**
@@ -27,15 +39,21 @@ public class Slider {
 	 *            The initial state of the board.
 	 */
 	public Slider(int[] initialBoard) {
+		if (initialBoard.length == 9) {
+			this.board = initialBoard;
+		}
 	}
 
 	private Slider(Slider toCopy, int tileLocation) {
+		this.board = toCopy.board;
+		this.board[8] = tileLocation;
 	}
 
 	/**
 	 * Clears the moves.
 	 */
 	public void clearMoves() {
+		this.moveCount = 0;
 	}
 
 	/**
@@ -44,6 +62,20 @@ public class Slider {
 	 * @return true if solved, false otherwise.
 	 */
 	public boolean solved() {
+		int[] solvedBoard = new int[9];
+		solvedBoard[0] = 1;
+		solvedBoard[1] = 2;
+		solvedBoard[2] = 3;
+		solvedBoard[3] = 4;
+		solvedBoard[4] = 5;
+		solvedBoard[5] = 6;
+		solvedBoard[6] = 7;
+		solvedBoard[7] = 8;
+		solvedBoard[8] = 0;
+
+		if (this.board.equals(solvedBoard)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -68,7 +100,28 @@ public class Slider {
 	 * @return Its position.
 	 */
 	public int getPosition(int tile) {
-		return 0;
+
+		if (this.board[0] == tile) {
+			return 0;
+		} else if (this.board[1] == tile) {
+			return 1;
+		} else if (this.board[2] == tile) {
+			return 2;
+		} else if (this.board[3] == tile) {
+			return 3;
+		} else if (this.board[4] == tile) {
+			return 4;
+		} else if (this.board[5] == tile) {
+			return 5;
+		} else if (this.board[6] == tile) {
+			return 6;
+		} else if (this.board[7] == tile) {
+			return 7;
+		} else if (this.board[8] == tile) {
+			return 8;
+		} else {
+			throw new IllegalStateException("Tile does not exist in board.");
+		}
 	}
 
 	/**
@@ -171,7 +224,10 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveDown() {
-		return false;
+		if ((this.getPosition(0) / this.width) == 2) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -180,7 +236,10 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveUp() {
-		return false;
+		if ((this.getPosition(0) / this.width) == 0) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -189,7 +248,10 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveLeft() {
-		return false;
+		if ((this.getPosition(0) % this.width) == 0) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -198,7 +260,10 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveRight() {
-		return false;
+		if ((this.getPosition(0) % this.width) == 2) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -228,14 +293,21 @@ public class Slider {
 		return this.manhattan() + this.moveCount;
 	}
 
+	/**
+	 * Gets the total Manhattan distance for the current state.
+	 *
+	 * @return The number of Manhattan state.
+	 */
 	private int manhattan() {
 		return 0;
 	}
 
 	@Override
 	public int hashCode() {
+
 		int hash = 0;
 		int multiplier = 10;
+
 		for (int i = 0; i < this.board.length; i++) {
 			hash += i * multiplier + this.board[0];
 		}
