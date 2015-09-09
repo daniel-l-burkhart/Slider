@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.OptionalInt;
 
 /**
  * Slider class.
@@ -44,8 +46,8 @@ public class Slider {
 		}
 	}
 
-	private Slider(Slider toCopy, int tileLocation) {
-		this.board = toCopy.board;
+	private Slider(int[] toCopy, int tileLocation) {
+		this.board = toCopy;
 		this.board[8] = tileLocation;
 	}
 
@@ -62,6 +64,7 @@ public class Slider {
 	 * @return true if solved, false otherwise.
 	 */
 	public boolean solved() {
+
 		int[] solvedBoard = new int[9];
 		solvedBoard[0] = 1;
 		solvedBoard[1] = 2;
@@ -73,7 +76,7 @@ public class Slider {
 		solvedBoard[7] = 8;
 		solvedBoard[8] = 0;
 
-		if (this.board.equals(solvedBoard)) {
+		if (Arrays.equals(this.board, solvedBoard)) {
 			return true;
 		}
 		return false;
@@ -101,24 +104,8 @@ public class Slider {
 	 */
 	public int getPosition(int tile) {
 
-		if (this.board[0] == tile) {
-			return 0;
-		} else if (this.board[1] == tile) {
-			return 1;
-		} else if (this.board[2] == tile) {
-			return 2;
-		} else if (this.board[3] == tile) {
-			return 3;
-		} else if (this.board[4] == tile) {
-			return 4;
-		} else if (this.board[5] == tile) {
-			return 5;
-		} else if (this.board[6] == tile) {
-			return 6;
-		} else if (this.board[7] == tile) {
-			return 7;
-		} else if (this.board[8] == tile) {
-			return 8;
+		if (tile == 9) {
+			return tile;
 		} else {
 			throw new IllegalStateException("Tile does not exist in board.");
 		}
@@ -130,7 +117,14 @@ public class Slider {
 	 * @return A new slider with the down achieved.
 	 */
 	public Slider down() {
-		return new Slider();
+
+		if (this.canMoveDown()) {
+			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			this.moveCount += 1;
+			return newSlider;
+		} else {
+			throw new IllegalStateException("Board cannot move down.");
+		}
 	}
 
 	/**
@@ -139,7 +133,16 @@ public class Slider {
 	 * @return A new slider with the up achieved.
 	 */
 	public Slider up() {
-		return new Slider();
+
+		if (this.canMoveUp()) {
+
+			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			this.moveCount += 1;
+			return newSlider;
+
+		} else {
+			throw new IllegalStateException("Board cannot move up.");
+		}
 	}
 
 	/**
@@ -148,7 +151,16 @@ public class Slider {
 	 * @return A new slider with the right achieved.
 	 */
 	public Slider right() {
-		return new Slider();
+
+		if (this.canMoveRight()) {
+
+			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			this.moveCount += 1;
+			return newSlider;
+
+		} else {
+			throw new IllegalStateException("Board cannot move right.");
+		}
 	}
 
 	/**
@@ -157,7 +169,16 @@ public class Slider {
 	 * @return A new slider with the left achieved.
 	 */
 	public Slider left() {
-		return new Slider();
+
+		if (this.canMoveLeft()) {
+
+			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			this.moveCount += 1;
+			return newSlider;
+
+		} else {
+			throw new IllegalStateException("Board cannot move left.");
+		}
 	}
 
 	/**
@@ -168,27 +189,19 @@ public class Slider {
 	 * @return A new slider with the move achieved.
 	 */
 	public Slider move(Direction aMove) {
-		if (aMove == Direction.NONE) {
-			throw new IllegalArgumentException("Cannot move no direction.");
-		}
 
 		if (aMove == Direction.DOWN) {
 			return this.down();
-		}
-
-		if (aMove == Direction.UP) {
+		} else if (aMove == Direction.UP) {
 			return this.up();
-		}
-
-		if (aMove == Direction.LEFT) {
+		} else if (aMove == Direction.LEFT) {
 			return this.left();
-		}
-
-		if (aMove == Direction.RIGHT) {
+		} else if (aMove == Direction.RIGHT) {
 			return this.right();
+		} else {
+			throw new IllegalArgumentException("Cannot move no direction.");
 		}
 
-		return null;
 	}
 
 	/**
@@ -197,6 +210,7 @@ public class Slider {
 	 * @return An araylist of the number of moves.
 	 */
 	public ArrayList<Direction> getMoves() {
+
 		ArrayList<Direction> moves = new ArrayList<>();
 
 		if (this.canMoveDown()) {
@@ -224,9 +238,11 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveDown() {
+
 		if ((this.getPosition(0) / this.width) == 2) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -236,9 +252,11 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveUp() {
+
 		if ((this.getPosition(0) / this.width) == 0) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -248,9 +266,11 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveLeft() {
+
 		if ((this.getPosition(0) % this.width) == 0) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -260,9 +280,11 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveRight() {
+
 		if ((this.getPosition(0) % this.width) == 2) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -272,7 +294,7 @@ public class Slider {
 	 * @return A string representation of the current slider state.
 	 */
 	public String toString() {
-		return "";
+		return Arrays.toString(this.board);
 	}
 
 	/**
@@ -299,7 +321,17 @@ public class Slider {
 	 * @return The number of Manhattan state.
 	 */
 	private int manhattan() {
-		return 0;
+		int manhattan = 0;
+
+		for (int i = 0; i < this.board.length; i++) {
+			if (this.board[i] == (i + 1) || this.board[8] == 0) {
+				continue;
+			} else {
+				manhattan += (Math.abs((this.board[i] / this.width) - (i / this.width))
+						+ Math.abs((this.board[i] % this.width) - (i % this.width)));
+			}
+		}
+		return manhattan;
 	}
 
 	@Override
