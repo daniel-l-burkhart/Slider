@@ -46,8 +46,8 @@ public class Slider {
 		}
 	}
 
-	private Slider(int[] toCopy, int tileLocation) {
-		this.board = toCopy;
+	private Slider(Slider toCopy, int tileLocation) {
+		this.board = toCopy.board;
 		this.board[8] = tileLocation;
 	}
 
@@ -103,12 +103,19 @@ public class Slider {
 	 * @return Its position.
 	 */
 	public int getPosition(int tile) {
-
-		if (tile == 9) {
-			return tile;
-		} else {
-			throw new IllegalStateException("Tile does not exist in board.");
+		int foundIndex = -1;
+		for (int i = 0; i < this.board.length; i++) {
+			if (this.board[i] == tile) {
+				foundIndex = i;
+			}
 		}
+		
+		if (foundIndex == -1) {
+			throw new IllegalStateException("The board does not contain that tile.");
+		}
+
+		return foundIndex;
+
 	}
 
 	/**
@@ -119,7 +126,7 @@ public class Slider {
 	public Slider down() {
 
 		if (this.canMoveDown()) {
-			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
 			this.moveCount += 1;
 			return newSlider;
 		} else {
@@ -136,7 +143,7 @@ public class Slider {
 
 		if (this.canMoveUp()) {
 
-			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
 			this.moveCount += 1;
 			return newSlider;
 
@@ -154,7 +161,7 @@ public class Slider {
 
 		if (this.canMoveRight()) {
 
-			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
 			this.moveCount += 1;
 			return newSlider;
 
@@ -172,7 +179,7 @@ public class Slider {
 
 		if (this.canMoveLeft()) {
 
-			Slider newSlider = new Slider(this.board, this.getPosition(0));
+			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
 			this.moveCount += 1;
 			return newSlider;
 
