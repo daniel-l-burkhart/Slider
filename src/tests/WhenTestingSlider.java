@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package tests;
 
@@ -12,7 +12,7 @@ import model.Slider;
 
 /**
  * The test class for the Slider.
- * 
+ *
  * @author danielburkhart
  * @version Fall 2015
  *
@@ -25,6 +25,7 @@ public class WhenTestingSlider {
 	@Test
 	public void whenInitialCallShouldBeSolved() {
 		Slider newSlider = new Slider();
+		System.out.println(newSlider.getPosition(0));
 		assertTrue(newSlider.solved());
 	}
 

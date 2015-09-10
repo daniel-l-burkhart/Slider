@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.OptionalInt;
 
 /**
  * Slider class.
@@ -17,21 +16,13 @@ public class Slider {
 
 	private final int width = 3;
 
+	private static final int[] SOLVED = { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
+
 	/**
 	 * Constructor of object.
 	 */
 	public Slider() {
-		this.board = new int[9];
-
-		int count = 1;
-		for (int i = 0; i < 8; i++) {
-			this.board[i] = count;
-			count += 1;
-		}
-
-		this.board[8] = 0;
-
-		this.moveCount = 0;
+		this.board = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
 	}
 
 	/**
@@ -46,9 +37,20 @@ public class Slider {
 		}
 	}
 
+	/**
+	 * Constructor that creates a board based on an existing board, but the new
+	 * board's blank space is swapped with the tile specified by tileLocation.
+	 *
+	 * @param toCopy
+	 *            The existing board.
+	 * @param tileLocation
+	 *            The position to be swapped with the blank space.
+	 */
 	private Slider(Slider toCopy, int tileLocation) {
 		this.board = toCopy.board;
-		this.board[8] = tileLocation;
+
+		this.board[8] = this.board[tileLocation];
+		this.board[tileLocation] = 0;
 	}
 
 	/**
@@ -65,20 +67,10 @@ public class Slider {
 	 */
 	public boolean solved() {
 
-		int[] solvedBoard = new int[9];
-		solvedBoard[0] = 1;
-		solvedBoard[1] = 2;
-		solvedBoard[2] = 3;
-		solvedBoard[3] = 4;
-		solvedBoard[4] = 5;
-		solvedBoard[5] = 6;
-		solvedBoard[6] = 7;
-		solvedBoard[7] = 8;
-		solvedBoard[8] = 0;
-
-		if (Arrays.equals(this.board, solvedBoard)) {
+		if (Arrays.equals(this.board, Slider.SOLVED)) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -92,7 +84,7 @@ public class Slider {
 	 * @return The distance between.
 	 */
 	public int distance(int positionA, int positionB) {
-		return 0;
+		return (this.manhattan() - positionA) - (this.manhattan() - positionB);
 	}
 
 	/**
@@ -104,12 +96,13 @@ public class Slider {
 	 */
 	public int getPosition(int tile) {
 		int foundIndex = -1;
+
 		for (int i = 0; i < this.board.length; i++) {
 			if (this.board[i] == tile) {
 				foundIndex = i;
 			}
 		}
-		
+
 		if (foundIndex == -1) {
 			throw new IllegalStateException("The board does not contain that tile.");
 		}
@@ -126,9 +119,11 @@ public class Slider {
 	public Slider down() {
 
 		if (this.canMoveDown()) {
+
 			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
 			this.moveCount += 1;
 			return newSlider;
+
 		} else {
 			throw new IllegalStateException("Board cannot move down.");
 		}
