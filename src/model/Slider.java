@@ -15,7 +15,6 @@ public class Slider {
 	private int moveCount;
 
 	private final int width = 3;
-	private int manhattan = 0;
 
 	/**
 	 * A constant representing a perfectly solved slider.
@@ -66,10 +65,19 @@ public class Slider {
 	 *            The position to be swapped with the blank space.
 	 */
 	private Slider(Slider toCopy, int tileLocation) {
-		this.board = toCopy.board;
 
-		this.board[8] = this.board[tileLocation];
+		this.board = new int[this.width * this.width];
+
+		for (int i = 0; i < this.board.length; i++) {
+			this.board[i] = toCopy.board[i];
+		}
+
+		int blankLocation = this.getPosition(0);
+
+		this.board[blankLocation] = this.board[tileLocation];
 		this.board[tileLocation] = 0;
+
+		this.moveCount = (toCopy.moveCount + 1);
 	}
 
 	/**
@@ -94,6 +102,16 @@ public class Slider {
 	}
 
 	/**
+	 * Returns the largest tile supported by this board, which should be 8. This
+	 * can be calculated with this.WIDTH * this.WIDTH - 1
+	 *
+	 * @return the largest tile supported by this board
+	 */
+	public int largestTile() {
+		return (this.width * this.width - 1);
+	}
+
+	/**
 	 * The distance between two points.
 	 *
 	 * @param positionA
@@ -109,25 +127,30 @@ public class Slider {
 	/**
 	 * returns the position of the specific tile.
 	 *
+	 * @precondition: the tile exists in the board (>-0 and <=8)
 	 * @param tile
 	 *            The tile in question
 	 * @return Its position.
 	 */
 	public int getPosition(int tile) {
-		int foundIndex = -1;
 
-		for (int i = 0; i < this.board.length; i++) {
+		if (tile < 0 || tile > 8) {
+			throw new IllegalArgumentException("Tile not found in this puzzle.");
+		}
+
+		int position = -1;
+
+		for (int i = 0; i < 9; i++) {
 			if (this.board[i] == tile) {
-				foundIndex = i;
+				position = i;
 			}
 		}
 
-		if (foundIndex == -1) {
-			throw new IllegalStateException("The board does not contain that tile.");
+		if (position == -1) {
+			throw new IllegalStateException("The tile is missing when it should not be missing.");
 		}
 
-		return foundIndex;
-
+		return position;
 	}
 
 	/**
@@ -139,8 +162,7 @@ public class Slider {
 
 		if (this.canMoveDown()) {
 
-			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
-			this.moveCount += 1;
+			Slider newSlider = new Slider(this, this.getPosition(0) + this.width);
 			return newSlider;
 
 		} else {
@@ -157,7 +179,7 @@ public class Slider {
 
 		if (this.canMoveUp()) {
 
-			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
+			Slider newSlider = new Slider(this, this.getPosition(0) - this.width);
 			this.moveCount += 1;
 			return newSlider;
 
@@ -175,7 +197,7 @@ public class Slider {
 
 		if (this.canMoveRight()) {
 
-			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
+			Slider newSlider = new Slider(this, this.getPosition(0) + 1);
 			this.moveCount += 1;
 			return newSlider;
 
@@ -193,7 +215,7 @@ public class Slider {
 
 		if (this.canMoveLeft()) {
 
-			Slider newSlider = new Slider(new Slider(this.board), this.getPosition(0));
+			Slider newSlider = new Slider(this, this.getPosition(0) - 1);
 			this.moveCount += 1;
 			return newSlider;
 
@@ -211,16 +233,23 @@ public class Slider {
 	 */
 	public Slider move(Direction aMove) {
 
-		if (aMove == Direction.DOWN) {
-			return this.down();
-		} else if (aMove == Direction.UP) {
-			return this.up();
-		} else if (aMove == Direction.LEFT) {
-			return this.left();
-		} else if (aMove == Direction.RIGHT) {
-			return this.right();
-		} else {
-			throw new IllegalArgumentException("Cannot move no direction.");
+		switch (aMove) {
+
+			case DOWN:
+				return this.down();
+
+			case UP:
+				return this.up();
+
+			case LEFT:
+				return this.left();
+
+			case RIGHT:
+				return this.right();
+
+			default:
+				throw new IllegalArgumentException("Cannot move no direction.");
+
 		}
 
 	}
@@ -310,15 +339,6 @@ public class Slider {
 	}
 
 	/**
-	 * The current state of the slider.
-	 *
-	 * @return A string representation of the current slider state.
-	 */
-	public String toString() {
-		return Arrays.toString(this.board);
-	}
-
-	/**
 	 * The number of moves.
 	 *
 	 * @return The number of moves.
@@ -342,18 +362,69 @@ public class Slider {
 	 * @return The number of Manhattan state.
 	 */
 	private int manhattan() {
-		return 0;
+
+		int manhattanDistanceSum = 0;
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board.length; j++) {
+				if (this.board[i] == Slider.SOLVED[j]) {
+					manhattanDistanceSum += (Math.abs(i / this.width - j / this.width)
+							+ Math.abs(i % this.width - j % this.width));
+				}
+			}
+		}
+		return manhattanDistanceSum;
+
+	}
+
+	/**
+	 * returns a string representation of the current state.
+	 *
+	 * @return A string of the board.
+	 */
+	public String toString() {
+
+		String puzzleShape = "[ ";
+
+		for (int i = 0; i < this.board.length; i++) {
+			if (i > 0 && i % this.width == 0) {
+				puzzleShape += "]\n[ ";
+			}
+
+			puzzleShape += String.format("%2d ", this.board[i]);
+		}
+		puzzleShape += "]\n";
+		return puzzleShape;
+	}
+
+	@Override
+	public boolean equals(Object currentObject) {
+
+		if (currentObject == null) {
+			return false;
+		}
+
+		if (currentObject == this) {
+			return true;
+		}
+
+		if (this.getClass() != currentObject.getClass()) {
+			return false;
+		}
+
+		return this.hashCode() == currentObject.hashCode();
 	}
 
 	@Override
 	public int hashCode() {
 
 		int hash = 0;
-		int multiplier = 10;
+		int multiplier = 1;
 
 		for (int i = 0; i < this.board.length; i++) {
-			hash += i * multiplier + this.board[0];
+			hash += multiplier * this.board[i];
+			multiplier *= 10;
 		}
+
 		return hash;
 	}
 }
