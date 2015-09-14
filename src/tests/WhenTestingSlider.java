@@ -25,7 +25,6 @@ public class WhenTestingSlider {
 	@Test
 	public void whenInitialCallShouldBeSolved() {
 		Slider newSlider = new Slider();
-		System.out.println(newSlider.getPosition(0));
 		assertTrue(newSlider.solved());
 	}
 
@@ -150,7 +149,7 @@ public class WhenTestingSlider {
 		newSlider.move(Direction.UP);
 		newSlider.move(Direction.LEFT);
 		newSlider.move(Direction.LEFT);
-		assertEquals(newSlider.score(), 8);
+		assertEquals(8, newSlider.score());
 	}
 
 }

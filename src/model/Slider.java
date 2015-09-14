@@ -15,8 +15,12 @@ public class Slider {
 	private int moveCount;
 
 	private final int width = 3;
+	private int manhattan = 0;
 
-	private static final int[] SOLVED = { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
+	/**
+	 * A constant representing a perfectly solved slider.
+	 */
+	public static final int[] SOLVED = { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
 
 	/**
 	 * Constructor of object.
@@ -34,6 +38,21 @@ public class Slider {
 	public Slider(int[] initialBoard) {
 		if (initialBoard.length == 9) {
 			this.board = initialBoard;
+		}
+
+		for (int count = 0; count < this.board.length - 1; count++) {
+			this.checkForDuplicates(count);
+		}
+	}
+
+	/**
+	 * @param count
+	 */
+	private void checkForDuplicates(int count) {
+		for (int i = count + 1; i < this.board.length; i++) {
+			if ((this.board[count] == this.board[i]) && (count != i)) {
+				throw new IllegalArgumentException("Element is found twice in board.");
+			}
 		}
 	}
 
@@ -323,17 +342,7 @@ public class Slider {
 	 * @return The number of Manhattan state.
 	 */
 	private int manhattan() {
-		int manhattan = 0;
-
-		for (int i = 0; i < this.board.length; i++) {
-			if (this.board[i] == (i + 1) || this.board[8] == 0) {
-				continue;
-			} else {
-				manhattan += (Math.abs((this.board[i] / this.width) - (i / this.width))
-						+ Math.abs((this.board[i] % this.width) - (i % this.width)));
-			}
-		}
-		return manhattan;
+		return 0;
 	}
 
 	@Override
