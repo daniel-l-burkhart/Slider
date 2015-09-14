@@ -16,6 +16,8 @@ public class Slider {
 
 	private final int width = 3;
 
+	private int manhattanDistance;
+
 	/**
 	 * A constant representing a perfectly solved slider.
 	 */
@@ -26,6 +28,7 @@ public class Slider {
 	 */
 	public Slider() {
 		this.board = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
+		this.moveCount = 0;
 	}
 
 	/**
@@ -42,6 +45,8 @@ public class Slider {
 		for (int count = 0; count < this.board.length - 1; count++) {
 			this.checkForDuplicates(count);
 		}
+
+		this.moveCount = 0;
 	}
 
 	/**
@@ -62,7 +67,7 @@ public class Slider {
 	 * @param toCopy
 	 *            The existing board.
 	 * @param tileLocation
-	 *            The position to be swapped with the blank space.
+	 *            The position to be swapped with the blank space. 5
 	 */
 	private Slider(Slider toCopy, int tileLocation) {
 
@@ -73,9 +78,10 @@ public class Slider {
 		}
 
 		int blankLocation = this.getPosition(0);
+		int tempTile = this.board[blankLocation];
 
 		this.board[blankLocation] = this.board[tileLocation];
-		this.board[tileLocation] = 0;
+		this.board[tileLocation] = tempTile;
 
 		this.moveCount = (toCopy.moveCount + 1);
 	}
@@ -109,19 +115,6 @@ public class Slider {
 	 */
 	public int largestTile() {
 		return (this.width * this.width - 1);
-	}
-
-	/**
-	 * The distance between two points.
-	 *
-	 * @param positionA
-	 *            The first position.
-	 * @param positionB
-	 *            The second position.
-	 * @return The distance between.
-	 */
-	public int distance(int positionA, int positionB) {
-		return (this.manhattan() - positionA) - (this.manhattan() - positionB);
 	}
 
 	/**
@@ -162,7 +155,7 @@ public class Slider {
 
 		if (this.canMoveDown()) {
 
-			Slider newSlider = new Slider(this, this.getPosition(0) + this.width);
+			Slider newSlider = new Slider(this, (this.getPosition(0) + this.width));
 			return newSlider;
 
 		} else {
@@ -179,7 +172,7 @@ public class Slider {
 
 		if (this.canMoveUp()) {
 
-			Slider newSlider = new Slider(this, this.getPosition(0) - this.width);
+			Slider newSlider = new Slider(this, (this.getPosition(0) - this.width));
 			this.moveCount += 1;
 			return newSlider;
 
@@ -197,7 +190,8 @@ public class Slider {
 
 		if (this.canMoveRight()) {
 
-			Slider newSlider = new Slider(this, this.getPosition(0) + 1);
+			Slider newSlider = new Slider(this, (this.getPosition(0) + 1));
+
 			this.moveCount += 1;
 			return newSlider;
 
@@ -215,7 +209,7 @@ public class Slider {
 
 		if (this.canMoveLeft()) {
 
-			Slider newSlider = new Slider(this, this.getPosition(0) - 1);
+			Slider newSlider = new Slider(this, (this.getPosition(0) - 1));
 			this.moveCount += 1;
 			return newSlider;
 
@@ -330,7 +324,6 @@ public class Slider {
 	 * @return True if the slider can move, false otherwise.
 	 */
 	public boolean canMoveRight() {
-
 		if ((this.getPosition(0) % this.width) == 2) {
 			return false;
 		}
@@ -357,22 +350,40 @@ public class Slider {
 	}
 
 	/**
+	 * The distance between two points.
+	 *
+	 * @param positionA
+	 *            The first position.
+	 * @param positionB
+	 *            The second position.
+	 * @return The distance between.
+	 */
+	public int distance(int positionA, int positionB) {
+		return Math.abs((positionA / this.width) - (positionB / this.width));
+	}
+
+	/**
 	 * Gets the total Manhattan distance for the current state.
 	 *
 	 * @return The number of Manhattan state.
 	 */
 	private int manhattan() {
 
-		int manhattanDistanceSum = 0;
+		this.manhattanDistance = 0;
 		for (int i = 0; i < this.board.length; i++) {
-			for (int j = 0; j < this.board.length; j++) {
-				if (this.board[i] == Slider.SOLVED[j]) {
-					manhattanDistanceSum += (Math.abs(i / this.width - j / this.width)
-							+ Math.abs(i % this.width - j % this.width));
-				}
+			this.calculateManhattanSum(i);
+		}
+		return this.manhattanDistance;
+
+	}
+
+	private void calculateManhattanSum(int currentIndex) {
+
+		for (int i = 0; i < Slider.SOLVED.length; i++) {
+			if (this.board[currentIndex] == Slider.SOLVED[i]) {
+				this.manhattanDistance += this.distance(currentIndex, i);
 			}
 		}
-		return manhattanDistanceSum;
 
 	}
 

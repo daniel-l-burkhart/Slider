@@ -3,7 +3,11 @@
  */
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashSet;
 
 import org.junit.Test;
 
@@ -18,6 +22,15 @@ import model.Slider;
  *
  */
 public class WhenTestingSlider {
+
+	/**
+	 * Test (f) an initial slider should have a score 0.
+	 */
+	@Test
+	public void whenInitialSliderScoreShouldEqualZero() {
+		Slider newSlider = new Slider();
+		assertEquals(0, newSlider.score());
+	}
 
 	/**
 	 * Test (a)
@@ -65,24 +78,20 @@ public class WhenTestingSlider {
 	}
 
 	/**
-	 * Test (f) an initial slider should have a score 0.
-	 */
-	@Test
-	public void whenInitialSliderScoreShouldEqualZero() {
-		Slider newSlider = new Slider();
-		assertEquals(newSlider.score(), 0);
-	}
-
-	/**
 	 * Test (g) an initial slider should not be solved after up, up, left, left.
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldNotBeSolved() {
 		Slider newSlider = new Slider();
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.LEFT);
-		newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
 		assertFalse(newSlider.solved());
 	}
 
@@ -92,10 +101,15 @@ public class WhenTestingSlider {
 	@Test
 	public void whenMovingUpUpLeftLeftShouldNotAllowMoveUp() {
 		Slider newSlider = new Slider();
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.LEFT);
-		newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
 		assertFalse(newSlider.canMoveUp());
 	}
 
@@ -106,10 +120,15 @@ public class WhenTestingSlider {
 	@Test
 	public void whenMovingUpUpLeftLeftShouldNotAllowMoveLeft() {
 		Slider newSlider = new Slider();
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.LEFT);
-		newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
 		assertFalse(newSlider.canMoveLeft());
 	}
 
@@ -119,10 +138,15 @@ public class WhenTestingSlider {
 	@Test
 	public void whenMovingUpUpLeftLeftShouldAllowMoveDown() {
 		Slider newSlider = new Slider();
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.LEFT);
-		newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
 		assertTrue(newSlider.canMoveDown());
 	}
 
@@ -132,10 +156,15 @@ public class WhenTestingSlider {
 	@Test
 	public void whenMovingUpUpLeftLeftShouldAllowMoveRight() {
 		Slider newSlider = new Slider();
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.LEFT);
-		newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
 		assertTrue(newSlider.canMoveRight());
 	}
 
@@ -145,11 +174,81 @@ public class WhenTestingSlider {
 	@Test
 	public void whenMovingUpUpLeftLeftShouldHaveAScoreOfEight() {
 		Slider newSlider = new Slider();
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.UP);
-		newSlider.move(Direction.LEFT);
-		newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.UP);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
+		newSlider = newSlider.move(Direction.LEFT);
+
 		assertEquals(8, newSlider.score());
+	}
+
+	/**
+	 * An initial slider should evaluate to 87654321.
+	 */
+	@Test
+	public void sliderWithNoMovesShouldHashTo87654321() {
+
+		Slider aSlider = new Slider();
+
+		assertEquals(87654321, aSlider.hashCode());
+	}
+
+	/**
+	 * Sliders with different moves should still be the same hash wise and be
+	 * equal.
+	 */
+	@Test
+	public void slidersWithDifferentMovesShouldHashTheSame() {
+
+		Slider aSlider = new Slider();
+
+		aSlider = aSlider.move(Direction.UP);
+		aSlider = aSlider.move(Direction.UP);
+		aSlider = aSlider.move(Direction.LEFT);
+		aSlider = aSlider.move(Direction.LEFT);
+
+		Slider bSlider = new Slider();
+
+		bSlider = bSlider.move(Direction.UP);
+		bSlider = bSlider.move(Direction.UP);
+		bSlider = bSlider.move(Direction.LEFT);
+		bSlider = bSlider.move(Direction.LEFT);
+		bSlider.clearMoves();
+
+		assertTrue(aSlider.hashCode() == bSlider.hashCode());
+	}
+
+	/**
+	 * The difference between moves put in hashSet should be 1.
+	 */
+	@Test
+	public void slidersWithDifferentMovesPutInHashSetShouldBeSize1() {
+
+		Slider aSlider = new Slider();
+
+		aSlider = aSlider.move(Direction.UP);
+		aSlider = aSlider.move(Direction.UP);
+		aSlider = aSlider.move(Direction.LEFT);
+		aSlider = aSlider.move(Direction.LEFT);
+
+		Slider bSlider = new Slider();
+
+		bSlider = bSlider.move(Direction.UP);
+		bSlider = bSlider.move(Direction.UP);
+		bSlider = bSlider.move(Direction.LEFT);
+		bSlider = bSlider.move(Direction.LEFT);
+
+		bSlider.clearMoves();
+
+		HashSet<Slider> aSet = new HashSet<>();
+		aSet.add(aSlider);
+		aSet.add(bSlider);
+
+		assertEquals(1, aSet.size());
 	}
 
 }
