@@ -151,7 +151,7 @@ public class WhenTestingSlider {
 	}
 
 	/**
-	 * Test (k) an initial slider should allow down after up, up, left, left.
+	 * Test (k) an initial slider should allow right after up, up, left, left.
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldAllowMoveRight() {
@@ -169,7 +169,7 @@ public class WhenTestingSlider {
 	}
 
 	/**
-	 * Test (l) an initial slider should allow down after up, up, left, left.
+	 * Test (l) an initial slider should have a score of 8 after up, up, left, left.
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldHaveAScoreOfEight() {

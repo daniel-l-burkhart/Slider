@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Slider class.
@@ -52,7 +54,7 @@ public class Slider {
 
 	/**
 	 * Checks to make sure there are no duplicates in the slider.
-	 * 
+	 *
 	 * @param count
 	 *            The current count of iteration of the public method.
 	 */
@@ -250,7 +252,6 @@ public class Slider {
 
 			default:
 				throw new IllegalArgumentException("Cannot move no direction.");
-
 		}
 
 	}
@@ -366,7 +367,8 @@ public class Slider {
 	 * @return The distance between.
 	 */
 	public int distance(int positionA, int positionB) {
-		return Math.abs((positionA / this.width) - (positionB / this.width));
+		return Math.abs((positionA / this.width) - (positionB / this.width))
+				+ Math.abs((positionA % this.width) - positionB % this.width);
 	}
 
 	/**
@@ -377,20 +379,15 @@ public class Slider {
 	private int manhattan() {
 
 		this.manhattanDistance = 0;
+
 		for (int i = 0; i < this.board.length; i++) {
-			this.calculateManhattanSum(i);
-		}
-		return this.manhattanDistance;
-
-	}
-
-	private void calculateManhattanSum(int currentIndex) {
-
-		for (int i = 0; i < Slider.SOLVED.length; i++) {
-			if (this.board[currentIndex] == Slider.SOLVED[i]) {
-				this.manhattanDistance += this.distance(currentIndex, i);
+			for (int current = 0; current < this.board.length; current++) {
+				if (this.board[i] == Slider.SOLVED[current])
+					this.manhattanDistance += this.distance(i, current);
 			}
 		}
+
+		return this.manhattanDistance;
 
 	}
 

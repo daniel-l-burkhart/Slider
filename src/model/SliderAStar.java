@@ -46,17 +46,21 @@ public class SliderAStar {
 		queue.add(this.initial);
 
 		while ((!queue.isEmpty())) {
-			
+
 			Slider current = queue.peek();
 
 			if (current.solved()) {
 				return this.buildPath(current, previousPuzzle, previousDirection);
 			}
-			
-			
+
 			closed.add(current);
-			
-			
+			for (Direction currentMove : current.getMoves()) {
+				if (closed.contains(current.move(currentMove))) {
+					continue;
+				}
+
+			}
+
 		}
 
 		return this.buildPath(queue.peek(), previousPuzzle, previousDirection);
@@ -66,9 +70,6 @@ public class SliderAStar {
 			HashMap<Slider, Direction> previousDirection) {
 		ArrayList<Direction> moves = new ArrayList<>();
 
-	   
-	   
-		
 		return moves;
 	}
 }
