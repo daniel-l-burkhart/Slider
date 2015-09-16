@@ -15,6 +15,7 @@ public class Slider {
 	private int moveCount;
 
 	private final int width = 3;
+	private final int rightOrLeft = 1;
 
 	private int manhattanDistance;
 
@@ -50,7 +51,10 @@ public class Slider {
 	}
 
 	/**
+	 * Checks to make sure there are no duplicates in the slider.
+	 * 
 	 * @param count
+	 *            The current count of iteration of the public method.
 	 */
 	private void checkForDuplicates(int count) {
 		for (int i = count + 1; i < this.board.length; i++) {
@@ -156,6 +160,7 @@ public class Slider {
 		if (this.canMoveDown()) {
 
 			Slider newSlider = new Slider(this, (this.getPosition(0) + this.width));
+			this.moveCount += 1;
 			return newSlider;
 
 		} else {
@@ -173,6 +178,7 @@ public class Slider {
 		if (this.canMoveUp()) {
 
 			Slider newSlider = new Slider(this, (this.getPosition(0) - this.width));
+
 			this.moveCount += 1;
 			return newSlider;
 
@@ -190,7 +196,7 @@ public class Slider {
 
 		if (this.canMoveRight()) {
 
-			Slider newSlider = new Slider(this, (this.getPosition(0) + 1));
+			Slider newSlider = new Slider(this, (this.getPosition(0) + this.rightOrLeft));
 
 			this.moveCount += 1;
 			return newSlider;
@@ -209,7 +215,8 @@ public class Slider {
 
 		if (this.canMoveLeft()) {
 
-			Slider newSlider = new Slider(this, (this.getPosition(0) - 1));
+			Slider newSlider = new Slider(this, (this.getPosition(0) - this.rightOrLeft));
+
 			this.moveCount += 1;
 			return newSlider;
 

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -42,12 +43,32 @@ public class SliderAStar {
 		HashMap<Slider, Direction> previousDirection = new HashMap<>();
 		HashSet<Slider> closed = new HashSet<>();
 
-		return new ArrayList<>();
+		queue.add(this.initial);
+
+		while ((!queue.isEmpty())) {
+			
+			Slider current = queue.peek();
+
+			if (current.solved()) {
+				return this.buildPath(current, previousPuzzle, previousDirection);
+			}
+			
+			
+			closed.add(current);
+			
+			
+		}
+
+		return this.buildPath(queue.peek(), previousPuzzle, previousDirection);
 	}
 
-	private ArrayList<Direction> buildPath(Slider aSlider, HashMap<Slider, Slider> previousPuzzle, HashMap<Slider, Direction> previousDirection) {
+	private ArrayList<Direction> buildPath(Slider aSlider, HashMap<Slider, Slider> previousPuzzle,
+			HashMap<Slider, Direction> previousDirection) {
 		ArrayList<Direction> moves = new ArrayList<>();
 
+	   
+	   
+		
 		return moves;
 	}
 }
