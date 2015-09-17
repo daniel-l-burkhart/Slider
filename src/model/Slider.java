@@ -19,8 +19,6 @@ public class Slider {
 	private final int width = 3;
 	private final int rightOrLeft = 1;
 
-	private int manhattanDistance;
-
 	/**
 	 * A constant representing a perfectly solved slider.
 	 */
@@ -354,7 +352,7 @@ public class Slider {
 	 * @return The score
 	 */
 	public int score() {
-		return this.manhattan() + this.moveCount;
+		return (this.manhattan() + this.moveCount());
 	}
 
 	/**
@@ -368,7 +366,7 @@ public class Slider {
 	 */
 	public int distance(int positionA, int positionB) {
 		return Math.abs((positionA / this.width) - (positionB / this.width))
-				+ Math.abs((positionA % this.width) - positionB % this.width);
+				+ Math.abs((positionA % this.width) - (positionB % this.width));
 	}
 
 	/**
@@ -378,16 +376,17 @@ public class Slider {
 	 */
 	private int manhattan() {
 
-		this.manhattanDistance = 0;
+		int manhattanDistance = 0;
 
-		for (int i = 0; i < this.board.length; i++) {
-			for (int current = 0; current < this.board.length; current++) {
-				if (this.board[i] == Slider.SOLVED[current])
-					this.manhattanDistance += this.distance(i, current);
+		for (int i = 1; i < this.board.length; i++) {
+
+			if (this.board[i] == Slider.SOLVED[i]) {
+
+				manhattanDistance += this.distance(i, i - 1);
 			}
 		}
 
-		return this.manhattanDistance;
+		return manhattanDistance;
 
 	}
 
