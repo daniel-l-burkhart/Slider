@@ -375,13 +375,11 @@ public class Slider {
 	 * @return The number of Manhattan state.
 	 */
 	private int manhattan() {
-
+		
 		int manhattanDistance = 0;
 
 		for (int i = 1; i < this.board.length; i++) {
-
-			if (this.board[i] == Slider.SOLVED[i]) {
-
+			if (this.board[i] != Slider.SOLVED[i]) {
 				manhattanDistance += this.distance(i, i - 1);
 			}
 		}

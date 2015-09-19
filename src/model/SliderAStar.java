@@ -68,9 +68,20 @@ public class SliderAStar {
 
 		}
 
-		return new ArrayList<Direction>();
+		return null;
 	}
 
+	/**
+	 * Method that builds the path of the solution.
+	 * 
+	 * @param aSlider
+	 *            The current slider.
+	 * @param previousPuzzle
+	 *            The previous Slider.
+	 * @param previousDirection
+	 *            The previous Direction.
+	 * @return An ArrayList of the path's solution.
+	 */
 	private ArrayList<Direction> buildPath(Slider aSlider, HashMap<Slider, Slider> previousPuzzle,
 			HashMap<Slider, Direction> previousDirection) {
 		ArrayList<Direction> moves = new ArrayList<>();

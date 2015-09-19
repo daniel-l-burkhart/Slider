@@ -18,7 +18,7 @@ import model.SliderAStar;
 /**
  * The test class for the AStar Search Algorithm
  *
- * @author dburkha1
+ * @author Tests created by JChurch.
  * @version Fall 2015
  *
  */
@@ -47,7 +47,7 @@ public class TestingSliderAStar {
 	}
 
 	/**
-	 * Test a puzzle with a different initial state.
+	 * Test a puzzle with a different initial state. 
 	 * Puzzle arrangement:
 	 * 5767814320
 	 */
@@ -70,7 +70,7 @@ public class TestingSliderAStar {
 	}
 
 	/**
-	 * Tests another initial state of the 8-puzzle.
+	 * Tests another initial state of the 8-puzzle. 
 	 * Puzzle arrangement:
 	 * 876543210
 	 */

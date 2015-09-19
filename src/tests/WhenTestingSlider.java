@@ -24,19 +24,11 @@ import model.Slider;
 public class WhenTestingSlider {
 
 	/**
-	 * Test (f) an initial slider should have a score 0.
-	 */
-	@Test
-	public void whenInitialSliderScoreShouldEqualZero() {
-		Slider newSlider = new Slider();
-		assertEquals(0, newSlider.score());
-	}
-
-	/**
-	 * Test (a)
+	 * Test (a). An initial call to solved after creation should return true.
 	 */
 	@Test
 	public void whenInitialCallShouldBeSolved() {
+
 		Slider newSlider = new Slider();
 		assertTrue(newSlider.solved());
 	}
@@ -46,6 +38,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenInitialCallShouldAllowUp() {
+
 		Slider newSlider = new Slider();
 		assertTrue(newSlider.canMoveUp());
 	}
@@ -55,6 +48,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenInitialCallShouldAllowLeft() {
+
 		Slider newSlider = new Slider();
 		assertTrue(newSlider.canMoveLeft());
 	}
@@ -64,6 +58,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenInitialCallShouldNotAllowDown() {
+
 		Slider newSlider = new Slider();
 		assertFalse(newSlider.canMoveDown());
 	}
@@ -73,8 +68,18 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenInitialCallShouldNotAllowRight() {
+
 		Slider newSlider = new Slider();
 		assertFalse(newSlider.canMoveRight());
+	}
+	
+	/**
+	 * Test (f) an initial slider should have a score 0.
+	 */
+	@Test
+	public void whenInitialSliderScoreShouldEqualZero() {
+		Slider newSlider = new Slider();
+		assertEquals(0, newSlider.score());
 	}
 
 	/**
@@ -82,6 +87,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldNotBeSolved() {
+
 		Slider newSlider = new Slider();
 
 		newSlider = newSlider.move(Direction.UP);
@@ -100,6 +106,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldNotAllowMoveUp() {
+
 		Slider newSlider = new Slider();
 
 		newSlider = newSlider.move(Direction.UP);
@@ -119,6 +126,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldNotAllowMoveLeft() {
+
 		Slider newSlider = new Slider();
 
 		newSlider = newSlider.move(Direction.UP);
@@ -137,6 +145,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldAllowMoveDown() {
+
 		Slider newSlider = new Slider();
 
 		newSlider = newSlider.move(Direction.UP);
@@ -155,6 +164,7 @@ public class WhenTestingSlider {
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldAllowMoveRight() {
+
 		Slider newSlider = new Slider();
 
 		newSlider = newSlider.move(Direction.UP);
@@ -169,10 +179,12 @@ public class WhenTestingSlider {
 	}
 
 	/**
-	 * Test (l) an initial slider should have a score of 8 after up, up, left, left.
+	 * Test (l) an initial slider should have a score of 8 after up, up, left,
+	 * left.
 	 */
 	@Test
 	public void whenMovingUpUpLeftLeftShouldHaveAScoreOfEight() {
+
 		Slider newSlider = new Slider();
 
 		newSlider = newSlider.move(Direction.UP);
@@ -217,6 +229,7 @@ public class WhenTestingSlider {
 		bSlider = bSlider.move(Direction.UP);
 		bSlider = bSlider.move(Direction.LEFT);
 		bSlider = bSlider.move(Direction.LEFT);
+
 		bSlider.clearMoves();
 
 		assertTrue(aSlider.hashCode() == bSlider.hashCode());
