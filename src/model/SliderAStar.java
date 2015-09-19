@@ -47,29 +47,38 @@ public class SliderAStar {
 
 		while ((!queue.isEmpty())) {
 
-			Slider current = queue.peek();
+			Slider aSlider = queue.poll();
 
-			if (current.solved()) {
-				return this.buildPath(current, previousPuzzle, previousDirection);
+			if (aSlider.solved()) {
+				return this.buildPath(aSlider, previousPuzzle, previousDirection);
 			}
 
-			closed.add(current);
-			for (Direction currentMove : current.getMoves()) {
-				if (closed.contains(current.move(currentMove))) {
-					continue;
+			closed.add(aSlider);
+			ArrayList<Direction> directions = aSlider.getMoves();
+
+			for (Direction aDirection : directions) {
+				Slider aBranch = aSlider.move(aDirection);
+				if (!closed.contains(aBranch)) {
+					previousPuzzle.put(aBranch, aSlider);
+					previousDirection.put(aBranch, aDirection);
+					queue.add(aBranch);
 				}
 
 			}
 
 		}
 
-		return this.buildPath(queue.peek(), previousPuzzle, previousDirection);
+		return new ArrayList<Direction>();
 	}
 
 	private ArrayList<Direction> buildPath(Slider aSlider, HashMap<Slider, Slider> previousPuzzle,
 			HashMap<Slider, Direction> previousDirection) {
 		ArrayList<Direction> moves = new ArrayList<>();
 
+		while (previousPuzzle.containsKey(aSlider)) {
+			moves.add(0, previousDirection.get(aSlider));
+			aSlider = previousPuzzle.get(aSlider);
+		}
 		return moves;
 	}
 }
