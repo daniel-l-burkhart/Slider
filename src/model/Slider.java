@@ -375,7 +375,7 @@ public class Slider {
 	 * @return The number of Manhattan state.
 	 */
 	private int manhattan() {
-		
+
 		int manhattanDistance = 0;
 
 		for (int i = 1; i < this.board.length; i++) {
@@ -408,6 +408,9 @@ public class Slider {
 		return puzzleShape;
 	}
 
+	/**
+	 * Override of the Equals method.
+	 */
 	@Override
 	public boolean equals(Object currentObject) {
 
@@ -426,6 +429,9 @@ public class Slider {
 		return this.hashCode() == currentObject.hashCode();
 	}
 
+	/**
+	 * Override of the hashCode method.
+	 */
 	@Override
 	public int hashCode() {
 

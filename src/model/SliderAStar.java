@@ -83,13 +83,16 @@ public class SliderAStar {
 	 * @return An ArrayList of the path's solution.
 	 */
 	private ArrayList<Direction> buildPath(Slider aSlider, HashMap<Slider, Slider> previousPuzzle,
-			HashMap<Slider, Direction> previousDirection) {
+					HashMap<Slider, Direction> previousDirection) {
+
+		Slider currentSlider = aSlider;
 		ArrayList<Direction> moves = new ArrayList<>();
 
-		while (previousPuzzle.containsKey(aSlider)) {
-			moves.add(0, previousDirection.get(aSlider));
-			aSlider = previousPuzzle.get(aSlider);
+		while (previousPuzzle.containsKey(currentSlider)) {
+			moves.add(0, previousDirection.get(currentSlider));
+			currentSlider = previousPuzzle.get(currentSlider);
 		}
+		
 		return moves;
 	}
 }
